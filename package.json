@@ -1,0 +1,11 @@
+
+{
+  "name": "com.jianyao17.improvedtimers",
+  "version": "1.0.0",
+  "displayName": "Improved Timers",
+  "description": "Improved Timers System for Unity that hooks into the Unity Player Loops. This is Jianyao17's Personal Implementation of Improved Timers by git-amend",
+  "author": {
+    "name": "Jianyao17",
+    "url": "https://github.com/Jianyao17"
+  }
+}
