@@ -5,8 +5,8 @@ namespace ImprovedTimers
 {
     public static class TimerManager
     {
-        private static readonly List<Timer> timers = new();
-        private static readonly List<Timer> sweep = new();
+        private static readonly List<Timer> timers = new List<Timer>();
+        private static readonly List<Timer> sweep = new List<Timer>();
         
         public static void RegisterTimer(Timer timer) => timers.Add(timer);
         public static void DeregisterTimer(Timer timer) => timers.Remove(timer);
