@@ -45,5 +45,34 @@ namespace ImprovedTimers.Tests
             Assert.AreEqual(10f, timer.CurrentTime, 0.1f, "Timer should stop at the max threshold.");
             Assert.IsFalse(timer.IsRunning, "Timer should stop running when it reaches the max threshold.");
         }
+        
+        [UnityTest]
+        public IEnumerator CountupTimer_TicksCorrectly()
+        {
+            var countupTimer = new CountupTimer(5f); // 5 detik
+            countupTimer.Start();
+
+            float initialTime = countupTimer.CurrentTime;
+            float initialProgress = countupTimer.Progress;
+
+            yield return new WaitForSeconds(1f); // Tunggu 1 detik
+
+            countupTimer.Tick();
+            Assert.Greater(countupTimer.CurrentTime, initialTime, "Current time should increase after ticking.");
+            Assert.Greater(countupTimer.Progress, initialProgress, "Progress should increase as time elapses.");
+        }
+
+        [UnityTest]
+        public IEnumerator CountupTimer_FinishesCorrectly()
+        {
+            var countupTimer = new CountupTimer(1f); // 1 detik
+            countupTimer.Start();
+
+            yield return new WaitForSeconds(1.1f); // Tunggu lebih dari durasi timer
+
+            countupTimer.Tick();
+            Assert.IsTrue(countupTimer.IsFinished, "Timer should finish when it reaches the threshold.");
+            Assert.AreEqual(1f, countupTimer.Progress, "Progress should be 1 when timer is finished.");
+        }
     }
 }

@@ -7,33 +7,56 @@ namespace ImprovedTimers.Tests
 {
     public class FrequencyTimerTests
     {
-        private FrequencyTimer timer;
-        private int tickCount;
-
-        [SetUp]
-        public void Setup()
-        {
-            tickCount = 0;
-            timer = new FrequencyTimer(2); // 2 ticks per second
-            timer.OnTick += () => tickCount++;
-        }
-
-        [TearDown]
-        public void Teardown()
-        {
-            timer.Dispose();
-        }
-
         [UnityTest]
         public IEnumerator FrequencyTimer_TicksAtCorrectFrequency()
         {
-            // Act
-            timer.Start();
-            yield return new WaitForSeconds(1f); // Wait for 1 second
-            timer.Tick();
+            var frequencyTimer = new FrequencyTimer(2); // 2 ticks per second
+            int tickCount = 0;
 
-            // Assert
-            Assert.AreEqual(2, tickCount, "Timer should have ticked twice in 1 second.");
+            frequencyTimer.OnTick += () => tickCount++;
+            frequencyTimer.Start();
+
+            yield return new WaitForSeconds(1f); // Tunggu 1 detik
+
+            frequencyTimer.Tick();
+            Assert.AreEqual(2, tickCount, "OnTick should be called twice after 1 second with 2 ticks per second.");
+        }
+
+        [UnityTest]
+        public IEnumerator FrequencyTimer_ResetsWithNewFrequency()
+        {
+            var frequencyTimer = new FrequencyTimer(2); // 2 ticks per second
+            int tickCount = 0;
+
+            frequencyTimer.OnTick += () => tickCount++;
+            frequencyTimer.Start();
+
+            yield return new WaitForSeconds(1f); // Tunggu 1 detik
+
+            frequencyTimer.Reset(4); // Ubah ke 4 ticks per second
+            tickCount = 0;
+            frequencyTimer.Start();
+
+            yield return new WaitForSeconds(1f); // Tunggu 1 detik
+
+            frequencyTimer.Tick();
+            Assert.AreEqual(4, tickCount, "OnTick should be called four times after 1 second with 4 ticks per second.");
+            Assert.AreEqual(4, frequencyTimer.TicksPerSecond, "TicksPerSecond should be updated correctly after reset.");
+        }
+
+        [UnityTest]
+        public IEnumerator FrequencyTimer_StopsWhenFinished()
+        {
+            var frequencyTimer = new FrequencyTimer(2); // 2 ticks per second
+            frequencyTimer.Start();
+
+            yield return new WaitForSeconds(1f); // Tunggu 1 detik
+
+            frequencyTimer.Stop();
+            Assert.IsFalse(frequencyTimer.IsRunning, "FrequencyTimer should stop running after Stop is called.");
+
+            frequencyTimer.Tick();
+            Assert.IsFalse(frequencyTimer.IsRunning, "FrequencyTimer should remain stopped after Stop is called.");
         }
     }
 }

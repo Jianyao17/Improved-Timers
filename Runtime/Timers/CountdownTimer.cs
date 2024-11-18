@@ -9,7 +9,9 @@ namespace ImprovedTimers
     {
         public CountdownTimer(float initialTime) : base(initialTime) { }
 
+        public float Progress => Mathf.Clamp(1f - (CurrentTime / initialTime), 0, 1);
         public override bool IsFinished => CurrentTime <= 0;
+        
         public override void Tick()
         {
             if (IsRunning && CurrentTime > 0)
