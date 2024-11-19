@@ -45,7 +45,7 @@ jobs:
           checkName: 'PlayMode Test Results'
           coverageOptions: 'generateAdditionalMetrics;generateHtmlReport;generateBadgeReport;assemblyFilters:+my.assembly.*'
           projectPath: ./copiedProject
-          githubToken: ${{ secrets.ACCESS_TOKEN }}
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
         
       - name: Upload coverage results
         uses: actions/upload-artifact@v3
