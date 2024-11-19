@@ -49,7 +49,7 @@ namespace ImprovedTimers
         public virtual void Reset() => CurrentTime = initialTime;
         public virtual void Reset(float value)
         {
-            CurrentTime = initialTime;
+            initialTime = value;
             Reset();
         }
 
